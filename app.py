@@ -83,9 +83,8 @@ def predict():
     xception_model = Xception(include_top=False, pooling="avg")
     img_path=request.files['img']
     photo = extract_features(img_path, xception_model)
-    
     description = generate_desc(model, tokenizer, photo, max_length)
-    return ('home.html',prediction_text=description[1:-1])
+    return render_template('home.html',prediction_text=description[1:-1])
     
 if __name__ == "__main__":
     app.run(debug=True)
