@@ -1,20 +1,6 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Tue Sep  7 17:19:31 2021
-
-@author: SAMBA
-"""
-
-
 from flask import Flask, render_template, request
-import jsonify
 import requests
 import pickle
-import numpy as np
-import sklearn
-from sklearn.preprocessing import StandardScaler
-import string
-import numpy as np
 from PIL import Image
 import os
 from pickle import dump, load
@@ -23,24 +9,16 @@ from keras.applications.xception import Xception, preprocess_input
 from keras.preprocessing.image import load_img, img_to_array
 from keras.preprocessing.text import Tokenizer
 from keras.preprocessing.sequence import pad_sequences
-
 from keras.layers.merge import add
 from keras.models import Model, load_model
 from keras.layers import Input, Dense, LSTM, Embedding, Dropout
-# small library for seeing the progress of loops.
-from tqdm import tqdm_notebook as tqdm
-
-
 
 app = Flask(__name__)
-model = load(open('C:\\Users\\SAMBA\\Desktop\\Internship DS\\ImageCaptionGen\\model.h5', 'rb'))
-
+model = load_model('new_model.h5')
 @app.route("/")
-
 def home():
     return render_template('home.html')
 
-@app.route('/predict',methods=['POST'])
 def extract_features(filename, model):
     try:
         image = Image.open(filename)
@@ -76,15 +54,15 @@ def generate_desc(model, tokenizer, photo, max_length):
             break
     return in_text
 
+@app.route('/predict',methods=['POST'])
 def predict():
     max_length = 32
     tokenizer = load(open("tokenizer.pkl","rb"))
-    model = load_model('model.h5')
     xception_model = Xception(include_top=False, pooling="avg")
     img_path=request.files['img']
     photo = extract_features(img_path, xception_model)
     description = generate_desc(model, tokenizer, photo, max_length)
-    return render_template('home.html',prediction_text=description[1:-1])
+    return render_template('home.html',prediction_text=description[5:-3])
     
 if __name__ == "__main__":
     app.run(debug=True)
