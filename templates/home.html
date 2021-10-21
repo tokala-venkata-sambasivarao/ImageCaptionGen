@@ -10,15 +10,15 @@
      <center>
         <h1> Prediction</h1>
         <label for="img">Select image:</label>
-    
-        <img id="blah" alt="your image" width="100" height="100" />
+        <img id="blah" alt="your image" width="600" height="400" />
         <input type="file" id="img" name="img" onchange="document.getElementById('blah').src = window.URL.createObjectURL(this.files[0])" accept="image/*">
         <input type="submit">
       </center>
    </form>
    <br><br>
    <center>
-    {{ prediction_text }}
+     <br />
+    <h2><b>{{ prediction_text }}</b></h2>
    </center>
  </body>
 </html>
