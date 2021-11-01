@@ -14,7 +14,7 @@ from keras.models import Model, load_model
 from keras.layers import Input, Dense, LSTM, Embedding, Dropout
 
 app = Flask(__name__)
-model = load_model('new_model.h5')
+model = load_model('final_model.h5')
 @app.route("/")
 def home():
     return render_template('home.html')
@@ -58,6 +58,7 @@ def generate_desc(model, tokenizer, photo, max_length):
 def predict():
     max_length = 32
     tokenizer = load(open("tokenizer.pkl","rb"))
+    model = load_model('final_model.h5')
     xception_model = Xception(include_top=False, pooling="avg")
     img_path=request.files['img']
     photo = extract_features(img_path, xception_model)
